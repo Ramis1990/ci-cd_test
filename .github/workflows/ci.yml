@@ -15,5 +15,17 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install dependencies
+        run: pip install -r requirements.txt  # ← теперь установит и flake8
+
+      # 🔹 НОВЫЙ ШАГ: Запуск линтера
+      - name: Run flake8 linter
+        run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Пояснение флагов:
+        # --count — показать количество ошибок
+        # --select=E9,F63,F7,F82 — проверять только критические ошибки (синтаксис, опечатки)
+        # --show-source — показать строку с ошибкой
+        # --statistics — статистика в конце
+
       - name: Run Hello World
         run: python main.py
