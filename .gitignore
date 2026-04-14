@@ -1,0 +1,35 @@
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Виртуальное окружение
+venv/
+.venv/
+
+# Настройки IDE / редакторов
+.idea/
+.vscode/
+.history/
+
+# Системные файлы
+.DS_Store
+
+# Логи
+*.log
+
+# Кэш / артефакты
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Локальные окружения / конфиги
+.env
+.env.*
+.python-version
+
+
+cookies
+*.png

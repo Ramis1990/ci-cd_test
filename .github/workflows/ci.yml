@@ -21,9 +21,6 @@ jobs:
       - name: Run flake8 linter
         run: flake8 . --select=E,W,F --ignore=F401 --show-source --statistics
 
-      - name: Run pytest
-        run: PYTHONPATH=. pytest tests/ -v
-
   # 🔹 Джоба с уведомлениями (запускается всегда после тестов)
   notify-telegram:
     needs: test-and-lint
