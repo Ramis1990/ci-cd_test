@@ -24,7 +24,7 @@ jobs:
 
       # 🔹 НОВЫЙ ШАГ: Запуск тестов
       - name: Run pytest
-        run: pytest tests/ -v
+        run: PYTHONPATH=. pytest tests/ -v
 
       - name: Run Hello World
         run: python main.py
