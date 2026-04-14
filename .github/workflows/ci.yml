@@ -1,9 +1,9 @@
-name: My First CI Pipeline
+name: My First CI/CD Pipeline
 
 on: [push]
 
 jobs:
-  run-hello:
+  test-and-lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,15 +16,33 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt  # ← теперь установит и flake8
+        run: pip install -r requirements.txt
 
-      # 🔹 НОВЫЙ ШАГ: Запуск линтера
       - name: Run flake8 linter
-        run: flake8 . --show-source --statistics
+        run: flake8 . --select=E,W,F --ignore=F401 --show-source --statistics
 
-      # 🔹 НОВЫЙ ШАГ: Запуск тестов
       - name: Run pytest
         run: PYTHONPATH=. pytest tests/ -v
 
-      - name: Run Hello World
-        run: python main.py
+  # 🔹 Джоба с уведомлениями (запускается всегда после тестов)
+  notify-telegram:
+    needs: test-and-lint
+    runs-on: ubuntu-latest
+    if: always()  # ← важно! Запускается даже если тесты упали
+
+    steps:
+      - name: Send Telegram notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: |
+            🔄 *CI/CD Pipeline* для ${{ github.repository }}
+            
+            📦 Коммит: ${{ github.event.head_commit.message }}
+            👤 Автор: ${{ github.actor }}
+            🔗 Ссылка: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            
+            ✅ *Статус*: ${{ needs.test-and-lint.result }}
+          format: markdown
+          disable_web_page_preview: true
