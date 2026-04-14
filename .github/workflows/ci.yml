@@ -21,11 +21,10 @@ jobs:
       # 🔹 НОВЫЙ ШАГ: Запуск линтера
       - name: Run flake8 linter
         run: flake8 . --show-source --statistics
-        # Пояснение флагов:
-        # --count — показать количество ошибок
-        # --select=E9,F63,F7,F82 — проверять только критические ошибки (синтаксис, опечатки)
-        # --show-source — показать строку с ошибкой
-        # --statistics — статистика в конце
+
+      # 🔹 НОВЫЙ ШАГ: Запуск тестов
+      - name: Run pytest
+        run: pytest tests/ -v
 
       - name: Run Hello World
         run: python main.py
